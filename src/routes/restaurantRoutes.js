@@ -4,7 +4,7 @@ const restaurantController = require('../controllers/restaurantController.js');
 const router = express.Router();
 
 router.route("/getallrestaurants").get(restaurantController.getAllRestaurants);
+router.route("/getlandmarks/:restaurantId").get(restaurantController.getLandmarksForRestaurant);
 router.route("/addnewrestaurant").post(restaurantController.addNewRestaurant);
-router.route("/getlandmarks").get(restaurantController.getLandmarksForRestaurant);
 
 module.exports = router;

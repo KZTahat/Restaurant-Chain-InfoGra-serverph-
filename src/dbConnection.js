@@ -1,12 +1,13 @@
 // Database connection
 const mysql = require('mysql2');
+require('dotenv').config();
 
 const db = mysql.createConnection({
-    host: 'restaurantchain.mysql.database.azure.com',
-    database: 'restaurant',
-    user: 'khaled',
-    password: 'Admin1234567890',
-    port: 3306
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_NAME,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
 });
 
 db.connect((err) => {
@@ -14,6 +15,5 @@ db.connect((err) => {
 
     console.log("connected successfully", db.threadId);
 });
-
 
 module.exports = db.promise();
