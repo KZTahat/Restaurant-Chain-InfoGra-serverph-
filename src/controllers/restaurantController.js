@@ -3,17 +3,44 @@ const database = require('../dbConnection.js');
 
 const getAllRestaurants = (req, res) => {
     try {
-        const query = `
-            SELECT b.*, GROUP_CONCAT(l.landmark) AS landmarks
-            FROM basicInfo b
-            LEFT JOIN landmarks l ON b.id = l.restaurantId
-            GROUP BY b.id;
-        `;
+        const query = 'select * from basicInfo';
         database.query(query).then(([rows, fields]) => {
             res.status(200).json(rows);
-        });
-    } catch (error) {
+        })
+    }
+    catch (error) {
         databaseError(res, 404, error.message || "Internal Server Error");
+    }
+}
+
+const getLandmarksForRestaurant = (req, res) => {
+    try {
+        const { restaurantId } = req.query;
+
+        if (!restaurantId) {
+            return res.status(400).json({ error: 'restaurantId parameter is required' });
+        }
+
+        const query = `
+            SELECT landmark
+            FROM landmarks
+            WHERE restaurantId = ${restaurantId};
+        `;
+
+        // Execute the query with the provided restaurantId
+        database.query(query)
+            .then(([rows, fields]) => {
+                const landmarks = rows.map(row => row.landmark);
+
+                res.status(200).json(landmarks);
+            })
+            .catch(error => {
+                console.error('Error fetching landmarks:', error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            });
+    } catch (error) {
+        console.error('Exception occurred:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
@@ -47,5 +74,6 @@ const addNewRestaurant = async (req, res) => {
 
 module.exports = {
     getAllRestaurants,
+    getLandmarksForRestaurant,
     addNewRestaurant,
 }
