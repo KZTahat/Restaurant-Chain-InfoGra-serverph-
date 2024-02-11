@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.route("/getallrestaurants").get(restaurantController.getAllRestaurants);
 router.route("/addnewrestaurant").post(restaurantController.addNewRestaurant);
+router.route("/getlandmarks").get(restaurantController.getLandmarksForRestaurant);
 
 module.exports = router;
