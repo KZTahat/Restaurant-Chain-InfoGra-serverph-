@@ -23,7 +23,7 @@ const getRestaurantsMenu = (req, res) => {
 
 const addNewRestaurantMenu = async (req, res) => {
     try {
-        const { menuItems } = req.body;
+        const menuItems = req.body;
         const { restaurantId } = req.params;
 
         const restaurantQuery = 'INSERT INTO menu (restaurantId, menuItem, servingTime) VALUES (?, ?, ?)';

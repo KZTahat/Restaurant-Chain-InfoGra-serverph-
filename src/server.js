@@ -9,6 +9,7 @@ const cors = require('cors');
 // importing all routes
 const restaurantsRoutes = require('./routes/restaurantRoutes.js');
 const menuRoutes = require('./routes/menuRoutes.js');
+const maintenanceRoutes = require('./routes/maintenanceRoutes.js');
 
 app.use(express.json());
 app.use(cors());
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 // using routes
 app.use(restaurantsRoutes);
 app.use(menuRoutes);
+app.use(maintenanceRoutes);
 
 app.use("*", notFoundHandler);
 app.use(internalServerError);
