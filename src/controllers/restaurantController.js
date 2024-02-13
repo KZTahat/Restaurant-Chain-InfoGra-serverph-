@@ -40,7 +40,22 @@ const getLandmarksForRestaurant = (req, res) => {
 
 const addNewRestaurant = async (req, res) => {
     try {
-        const { restaurantName, phoneNumber, streetName, openingHours, landmarks } = req.body;
+        const { restaurantName, phoneNumber, streetName, startTime, closeTime, landmarks } = req.body;
+
+        function convertTimeTo12HourFormat(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const hours12 = hours % 12 || 12;
+            // Format the time in 12-hour format
+            const time12HourFormat = `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
+            return time12HourFormat;
+        }
+
+        const openingHours = {
+            start: convertTimeTo12HourFormat(startTime),
+            end: convertTimeTo12HourFormat(closeTime),
+        }
 
         // Insert restaurant information into the restaurants table
         const restaurantQuery = 'INSERT INTO basicInfo (restaurantName, phoneNumber, streetName, openingHours) VALUES (?, ?, ?, ?)';
